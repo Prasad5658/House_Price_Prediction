@@ -2,11 +2,12 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import pickle
+import gzip
 
 app = Flask(__name__)
 
 # Loading the trained Random Forest model package
-with open("RandomForest_HousePrice.pkl", "rb") as f:
+with gzip.open("RandomForest_HousePrice.pkl.gz", "rb") as f:
     model_package = pickle.load(f)
 
 # Extracting model and saved information
