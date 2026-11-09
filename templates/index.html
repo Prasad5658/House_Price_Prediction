@@ -1,0 +1,399 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction | Vihara Tech</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 28px 18px 48px;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #1f2937;
+            background: #f3f6fb;
+        }
+
+        .page { max-width: 1120px; margin: 0 auto; }
+
+        .header {
+            position: relative;
+            min-height: 190px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 18px 245px 22px;
+            background: #ffffff;
+            border: 1px solid #e5eaf2;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(31, 48, 75, 0.07);
+        }
+
+        .heading { text-align: center; }
+
+        .organization {
+            margin: 0 0 12px;
+            color: #176b87;
+            font-size: 15px;
+            font-weight: 800;
+            letter-spacing: 3px;
+        }
+
+        h1 {
+            margin: 0;
+            color: #172554;
+            font-size: clamp(25px, 3vw, 36px);
+        }
+
+        .byline {
+            margin: 10px 0 0;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .profile {
+            position: absolute;
+            top: 16px;
+            right: 22px;
+            width: 190px;
+            text-align: center;
+        }
+
+        .profile img {
+            width: 86px;
+            height: 86px;
+            object-fit: cover;
+            object-position: center 25%;
+            border-radius: 50%;
+            border: 3px solid #dbeafe;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, .12);
+        }
+
+        .profile-name {
+            margin: 7px 0 5px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .contact {
+            display: block;
+            margin: 4px 0;
+            color: #475569;
+            font-size: 11px;
+            text-decoration: none;
+            overflow-wrap: anywhere;
+        }
+
+        .contact:hover {
+            color: #0369a1;
+            text-decoration: underline;
+        }
+
+        .form-card {
+            margin-top: 24px;
+            padding: 28px;
+            background: #ffffff;
+            border: 1px solid #e5eaf2;
+            border-radius: 18px;
+            box-shadow: 0 8px 28px rgba(31, 48, 75, 0.06);
+        }
+
+        .form-card h2 {
+            margin: 0 0 6px;
+            color: #172554;
+            font-size: 22px;
+        }
+
+        .subtitle {
+            margin: 0 0 24px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .fields {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .field input, .field select {
+            width: 100%;
+            height: 44px;
+            padding: 0 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: #fff;
+            color: #1f2937;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .field input:focus, .field select:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2,132,199,.12);
+        }
+
+        .actions {
+            margin-top: 26px;
+            text-align: center;
+        }
+
+        button {
+            min-width: 220px;
+            padding: 13px 24px;
+            border: 0;
+            border-radius: 9px;
+            color: #fff;
+            background: #075985;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover { background: #0c4a6e; }
+
+        .result {
+            margin-top: 24px;
+            padding: 20px;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            background: #f0f9ff;
+            text-align: center;
+        }
+
+        .result p {
+            margin: 0 0 7px;
+            color: #075985;
+            font-weight: 700;
+        }
+
+        .result strong {
+            color: #0f172a;
+            font-size: 27px;
+        }
+
+        .footer {
+            margin-top: 18px;
+            text-align: center;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        @media (max-width: 760px) {
+            .header {
+                min-height: 0;
+                padding: 24px 16px 190px;
+            }
+
+            .profile {
+                top: auto;
+                bottom: 15px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: 100%;
+            }
+
+            .fields {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .form-card { padding: 20px; }
+        }
+
+        @media (max-width: 480px) {
+            body { padding: 14px 10px 30px; }
+            .fields { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="page">
+
+    <header class="header">
+
+        <div class="heading">
+            <p class="organization">VIHARA TECH</p>
+            <h1>House Price Prediction</h1>
+            <p class="byline">By K. Prasad Kumar</p>
+        </div>
+
+        <aside class="profile">
+            <img src="{{ url_for('static', filename='profile.jpeg') }}"
+                 alt="K. Prasad Kumar">
+
+            <p class="profile-name">K. Prasad Kumar</p>
+
+            <a class="contact"
+               href="mailto:koulaskarprasad589@gmail.com">
+                koulaskarprasad589@gmail.com
+            </a>
+
+            <a class="contact" href="tel:+919390425790">
+                +91 9390425790
+            </a>
+        </aside>
+
+    </header>
+
+    <main class="form-card">
+
+        <h2>Enter House Details</h2>
+
+        <p class="subtitle">
+            Fill in all the property details to estimate the house price.
+        </p>
+
+        <form action="/predict" method="POST">
+
+            <div class="fields">
+
+                <div class="field">
+                    <label for="bedrooms">Bedrooms</label>
+                    <input id="bedrooms" name="bedrooms"
+                           type="number" min="0" step="1"
+                           placeholder="e.g. 3" required>
+                </div>
+
+                <div class="field">
+                    <label for="bathrooms">Bathrooms</label>
+                    <input id="bathrooms" name="bathrooms"
+                           type="number" min="0" step="0.5"
+                           placeholder="e.g. 2" required>
+                </div>
+
+                <div class="field">
+                    <label for="sqft_living">Living Area (sq ft)</label>
+                    <input id="sqft_living" name="sqft_living"
+                           type="number" min="0" step="1"
+                           placeholder="e.g. 1800" required>
+                </div>
+
+                <div class="field">
+                    <label for="sqft_lot">Lot Area (sq ft)</label>
+                    <input id="sqft_lot" name="sqft_lot"
+                           type="number" min="0" step="1"
+                           placeholder="e.g. 5000" required>
+                </div>
+
+                <div class="field">
+                    <label for="floors">Floors</label>
+                    <input id="floors" name="floors"
+                           type="number" min="0" step="0.5"
+                           placeholder="e.g. 1" required>
+                </div>
+
+                <div class="field">
+                    <label for="waterfront">Waterfront (0 or 1)</label>
+                    <select id="waterfront" name="waterfront" required>
+                        <option value="">Select</option>
+                        <option value="0">No (0)</option>
+                        <option value="1">Yes (1)</option>
+                    </select>
+                </div>
+
+                <div class="field">
+                    <label for="view">View (0–4)</label>
+                    <input id="view" name="view"
+                           type="number" min="0" max="4" step="1"
+                           placeholder="0 to 4" required>
+                </div>
+
+                <div class="field">
+                    <label for="condition">Condition (1–5)</label>
+                    <input id="condition" name="condition"
+                           type="number" min="1" max="5" step="1"
+                           placeholder="1 to 5" required>
+                </div>
+
+                <div class="field">
+                    <label for="sqft_above">Above Area (sq ft)</label>
+                    <input id="sqft_above" name="sqft_above"
+                           type="number" min="0" step="1"
+                           placeholder="e.g. 1500" required>
+                </div>
+
+                <div class="field">
+                    <label for="sqft_basement">Basement Area (sq ft)</label>
+                    <input id="sqft_basement" name="sqft_basement"
+                           type="number" min="0" step="1"
+                           placeholder="e.g. 300" required>
+                </div>
+
+                <div class="field">
+                    <label for="yr_built">Year Built</label>
+                    <input id="yr_built" name="yr_built"
+                           type="number" min="1800" max="2100" step="1"
+                           placeholder="e.g. 1995" required>
+                </div>
+
+                <div class="field">
+                    <label for="yr_renovated">Year Renovated (0 if never)</label>
+                    <input id="yr_renovated" name="yr_renovated"
+                           type="number" min="0" max="2100" step="1"
+                           placeholder="e.g. 2010 or 0" required>
+                </div>
+
+                <!-- New categorical fields -->
+
+                <div class="field">
+                    <label for="city">City</label>
+                    <input id="city" name="city"
+                           type="text"
+                           placeholder="Enter dataset city"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label for="statezip">State ZIP</label>
+                    <input id="statezip" name="statezip"
+                           type="text"
+                           placeholder="Enter state ZIP"
+                           required>
+                </div>
+
+                <div class="field">
+                    <label for="country">Country</label>
+                    <input id="country" name="country"
+                           type="text"
+                           placeholder="Enter country"
+                           required>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="submit">Predict House Price</button>
+            </div>
+
+        </form>
+
+        {% if prediction_text is defined %}
+        <section class="result">
+            <p>{{ prediction_text }}</p>
+        </section>
+        {% endif %}
+
+    </main>
+
+    <p class="footer">
+        House Price Prediction · Vihara Tech
+    </p>
+
+</div>
+
+</body>
+</html>
