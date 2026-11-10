@@ -2,11 +2,12 @@
 from flask import Flask, render_template, request
 import pandas as pd
 import pickle
-import gzip
 
 app = Flask(__name__)
 
 # Loading the trained Random Forest model package
+import gzip
+
 with gzip.open("RandomForest_HousePrice.pkl.gz", "rb") as f:
     model_package = pickle.load(f)
 
@@ -14,6 +15,12 @@ with gzip.open("RandomForest_HousePrice.pkl.gz", "rb") as f:
 model = model_package['model']
 category_mappings = model_package['category_mappings']
 feature_names = model_package['feature_names']
+@app.context_processor
+def dropdown_options():
+    return {
+        'cities': sorted(category_mappings['city'].keys()),
+        'statezips': sorted(category_mappings['statezip'].keys())
+    }
 
 
 @app.route("/")
